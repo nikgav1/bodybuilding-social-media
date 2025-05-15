@@ -2,26 +2,26 @@ import { Router } from '@vaadin/router';
 
 const routes = [
   {
-    path: '/src/spa/',
+    path: '/spa/',
     component: 'home-page',
     action: async () => {
       await import('../pages/home');
-    }
+    },
   },
   {
-    path: '/src/spa/profile/',
+    path: '/spa/profile/',
     component: 'profile-page',
     action: async () => {
       await import('../pages/profile');
-    }
+    },
   },
   {
     path: '(.*)',
     component: 'not-found-page',
     action: async () => {
       await import('../pages/404');
-    }
-  }
+    },
+  },
 ];
 
 export const initRouter = (outlet: HTMLElement) => {

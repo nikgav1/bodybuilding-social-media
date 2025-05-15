@@ -6,22 +6,24 @@ import { initRouter } from '../router/router';
 export class AppRoot extends LitElement {
   static styles = css`
     :host {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
   `;
 
   firstUpdated() {
-    const outlet = this.renderRoot.querySelector('#outlet') as HTMLElement | null;
+    const outlet = this.renderRoot.querySelector(
+      '#outlet'
+    ) as HTMLElement | null;
     if (outlet) initRouter(outlet);
   }
 
   render() {
     return html`
       <nav>
-        <a href="/src/spa/">Home</a>
-        <a href="/src/spa/profile/">Profile</a>
+        <a href="/spa/">Home</a>
+        <a href="/spa/profile/">Profile</a>
       </nav>
       <main id="outlet"></main>
     `;

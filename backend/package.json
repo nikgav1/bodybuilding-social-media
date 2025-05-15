@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/app.js"
+    "start": "tsc && node dist/app.js",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,json,css,scss,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,ts,tsx,json,css,scss,md}\""
   },
   "keywords": [],
   "author": "",
@@ -19,8 +21,11 @@
     "mongoose": "^8.14.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",
-    "@types/node": "^22.15.17"
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.17",
+    "prettier": "^3.5.3"
   }
 }

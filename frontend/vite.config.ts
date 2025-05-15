@@ -16,12 +16,24 @@ export default defineConfig({
     }
   },
   build: {
+    outDir: 'dist',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, '/src/pages/main/index.html'),
-        about: resolve(__dirname, '/src/pages/about/index.html'),
-        spa: resolve(__dirname, '/src/spa/index.html')
+        main: resolve(__dirname, 'src/pages/main/index.html'),
+        about: resolve(__dirname, 'src/pages/about/index.html'),
+        spa: resolve(__dirname, 'src/spa/index.html')
       },
-    },
-  },
+      output: {
+        entryFileNames: (chunkInfo) => {
+          return `${chunkInfo.name === 'spa' ? 'spa' : 'pages/' + chunkInfo.name}/[name].[hash].js`;
+        },
+        chunkFileNames: (chunkInfo) => {
+          return `assets/js/[name].[hash].js`;
+        },
+        assetFileNames: (chunkInfo) => {
+          return `assets/[ext]/[name].[hash].[ext]`;
+        }
+      }
+    }
+  }
 })
