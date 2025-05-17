@@ -16,25 +16,7 @@ export function removeToken() {
   localStorage.removeItem('token');
 }
 
-export async function validateToken() {
-  const token = getToken();
-  if (!token) {
-    return false;
-  }
-  try {
-    const res = await axios.post('/api/validate-token', { token });
-    return res;
-  } catch (error) {
-    console.error('Token validation failed:', error);
-    return false;
-  }
-}
-
 export async function signIn(email: string, password: string) {
-  const token = getToken();
-  if (!token) {
-    return false;
-  }
   try {
     const res = await axios.post('/api/signin', { email, password });
     return res;

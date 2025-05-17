@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import express from 'express';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
+const JWT_EXPIRES_IN = '2h';
 
 export const signUp = async (req: express.Request, res: express.Response) => {
   const { userName, email, password } = req.body;
@@ -14,9 +15,17 @@ export const signUp = async (req: express.Request, res: express.Response) => {
   try {
     // Save the new user to the database
     const savedUser = await newUser.save();
-    res
-      .status(201)
-      .json({ message: 'User created successfully', user: savedUser });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: savedUser._id, email: savedUser.email },
+      process.env.JWT_SECRET || 'your_jwt_secret',
+      {
+        expiresIn: JWT_EXPIRES_IN,
+      }
+    );
+
+    res.json({ token });
   } catch (error: any) {
     if (error.code === 11000) {
       // Duplicate key error
@@ -52,43 +61,27 @@ export const signIn = async (req: express.Request, res: express.Response) => {
     { id: user._id, email: user.email },
     process.env.JWT_SECRET || 'your_jwt_secret',
     {
-      expiresIn: '1h',
+      expiresIn: JWT_EXPIRES_IN,
     }
   );
 
   res.json({ token });
 };
 
-export const validateToken = async (
-  req: express.Request,
-  res: express.Response
-): Promise<void> => {
-  const { token } = req.body as { token: string };
-
+export const validateToken = async (req: express.Request, res: express.Response): Promise<void> => {
+  const { token } = req.body;
+  
   if (!token) {
     res.status(401).json({ message: 'No token provided' });
-    return;
+    return
   }
-
-  const secret: string = process.env.JWT_SECRET || 'your_jwt_secret';
-
-  // Verify the token
+  
+  const secret = process.env.JWT_SECRET || 'your_jwt_secret';
+  
   try {
-    const decoded = await new Promise((resolve, reject) => {
-      jwt.verify(
-        token,
-        secret,
-        (
-          err: jwt.VerifyErrors | null,
-          decoded: string | jwt.JwtPayload | undefined
-        ) => {
-          if (err) reject(err);
-          else resolve(decoded);
-        }
-      );
-    });
+    const decoded = jwt.verify(token, secret);
 
-    res.json({ message: 'Token is valid', decoded });
+    res.json({ decoded});
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });
   }
