@@ -5,10 +5,10 @@ export async function authMiddleware(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
-) {
+): Promise<void> {
   const token: string = req.headers['authorization']?.split(' ')[1] || '';
   if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+    res.status(401).json({ message: 'No token provided' });
   }
   const secret: string = process.env.JWT_SECRET || 'your_jwt_secret';
   // Verify the token

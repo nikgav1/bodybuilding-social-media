@@ -68,20 +68,23 @@ export const signIn = async (req: express.Request, res: express.Response) => {
   res.json({ token });
 };
 
-export const validateToken = async (req: express.Request, res: express.Response): Promise<void> => {
+export const validateToken = async (
+  req: express.Request,
+  res: express.Response
+): Promise<void> => {
   const { token } = req.body;
-  
+
   if (!token) {
     res.status(401).json({ message: 'No token provided' });
-    return
+    return;
   }
-  
+
   const secret = process.env.JWT_SECRET || 'your_jwt_secret';
-  
+
   try {
     const decoded = jwt.verify(token, secret);
 
-    res.json({ decoded});
+    res.json({ decoded });
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });
   }
