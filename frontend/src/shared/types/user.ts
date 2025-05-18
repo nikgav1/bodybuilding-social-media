@@ -9,7 +9,11 @@ export interface UserData {
 export interface Post {
   _id: string;
   description: string;
-  url: string;
   likes: number;
+  url: string;
   createdAt?: string;
+}
+
+export interface getPostsResponse {
+  posts: Post[];
 }

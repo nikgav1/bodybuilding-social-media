@@ -3,40 +3,48 @@
 # ─────────────────────────────────────────────────────────────────────────────
 FROM node:18-alpine AS builder
 
-# Create and switch to the app directory
 WORKDIR /app
 
-# Copy only package files to install dependencies first
-COPY package.json package-lock.json ./
+# Copy package files for root, frontend, and backend
+COPY package*.json ./
+COPY frontend/package*.json ./frontend/
+COPY backend/package*.json ./backend/
 
-# Install root dependencies (if any). If you keep package.json empty here, this step does little.
-RUN npm install
+# Install dependencies separately to leverage Docker caching
+RUN npm install && \
+    npm install --prefix frontend && \
+    npm install --prefix backend
 
-# Copy the entire project into the container
+# Copy all source files (except those in .dockerignore)
 COPY . .
 
-# Install and build frontend
-RUN npm install --prefix frontend
-RUN npm run build --prefix frontend
-
-# Install and build backend
-RUN npm install --prefix backend
-RUN npm run build --prefix backend
+# Build applications
+RUN npm run build --prefix frontend && \
+    npm run build --prefix backend
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 2. Production Stage: Copy build artifacts & run the backend
+# 2. Production Stage: Copy only what's needed to run the app
 # ─────────────────────────────────────────────────────────────────────────────
 FROM node:18-alpine AS runner
+
+# Set production environment
+ENV NODE_ENV=production
+
 WORKDIR /app
 
-# Copy everything from builder
-COPY --from=builder /app /app
+# Copy backend package files and install only production dependencies
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install --omit=dev
 
-# Optionally, if you need environment files:
-# COPY .env /app/backend/.env
+# Copy built artifacts
+COPY --from=builder /app/backend/dist ./backend/dist
+COPY --from=builder /app/frontend/dist ./frontend/dist
 
-# Expose the port your backend runs on (adjust if needed)
+# Copy any additional files needed for backend to serve frontend
+COPY backend/.env ./backend/.env
+
+# Expose API port
 EXPOSE 3000
 
-# Start the backend (assumes "start" script in backend/package.json)
+# Run the app (note: only runs the compiled JS, not TypeScript)
 CMD ["npm", "run", "start", "--prefix", "backend"]

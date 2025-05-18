@@ -69,3 +69,21 @@ export const getUserPosts = async (
     });
   }
 };
+
+export const getFeedPosts = async (
+  req: express.Request,
+  res: express.Response,
+): Promise<void> => {
+  try {
+    // Use MongoDB aggregation to get 10 random posts
+    const posts = await Post.aggregate([{ $sample: { size: 10 } }]);
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching feed posts:', error);
+    res.status(500).json({
+      message: 'Error fetching feed posts',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+}

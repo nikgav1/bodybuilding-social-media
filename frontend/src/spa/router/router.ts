@@ -16,6 +16,13 @@ const routes = [
     },
   },
   {
+    path: '/spa/feed/',
+    component: 'feed-page',
+    action: async () => {
+      await import('../pages/feed');
+    }
+  },
+  {
     path: '(.*)',
     component: 'not-found-page',
     action: async () => {

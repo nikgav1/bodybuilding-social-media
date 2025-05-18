@@ -58,7 +58,7 @@ export class AppRoot extends LitElement {
 
         <nav class="main-nav ${this.mobileMenuOpen ? 'active' : ''}">
           <a href="/spa/" class="nav-link">Home</a>
-          <a href="/spa/explore/" class="nav-link">Explore</a>
+          <a href="/spa/feed/" class="nav-link">Explore</a>
 
           ${this.isAuthenticated
             ? html`

@@ -1,0 +1,37 @@
+# Dependencies
+node_modules
+*/node_modules
+
+# Build outputs
+*/dist
+*/build
+
+# Version control
+.git
+.gitignore
+.github
+
+# Environment files (copy these explicitly in Dockerfile)
+.env*
+*/.env*
+!backend/.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.idea
+.vscode
+*.swp
+*.swo
+
+# Test files
+*/test
+*/tests
+*/coverage
