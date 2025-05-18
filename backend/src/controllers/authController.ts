@@ -18,7 +18,7 @@ export const signUp = async (req: express.Request, res: express.Response) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: savedUser._id, email: savedUser.email },
+      { id: savedUser._id, email: savedUser.email, name: savedUser.name },
       process.env.JWT_SECRET || 'your_jwt_secret',
       {
         expiresIn: JWT_EXPIRES_IN,
@@ -58,7 +58,7 @@ export const signIn = async (req: express.Request, res: express.Response) => {
   }
   // Generate JWT token
   const token = jwt.sign(
-    { id: user._id, email: user.email },
+    { id: user._id, email: user.email, name: user.name },
     process.env.JWT_SECRET || 'your_jwt_secret',
     {
       expiresIn: JWT_EXPIRES_IN,

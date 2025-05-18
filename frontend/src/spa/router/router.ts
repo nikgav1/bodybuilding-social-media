@@ -3,7 +3,7 @@ import { Router } from '@vaadin/router';
 const routes = [
   {
     path: '/spa/',
-    component: 'home-page',
+    component: 'photo-upload-form',
     action: async () => {
       await import('../pages/home');
     },

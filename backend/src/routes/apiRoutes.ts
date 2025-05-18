@@ -1,7 +1,7 @@
 import express from 'express';
 import { signUp, signIn, validateToken } from '../controllers/authController';
 import { authMiddleware } from '../middlewares/auth';
-import { uploadPhoto } from '../controllers/dataController';
+import { uploadPhoto, getUserPosts } from '../controllers/dataController';
 import { upload } from '../services/uploadPhoto';
 
 const router: express.Router = express.Router();
@@ -15,5 +15,6 @@ router.post(
   upload.single('photo'),
   uploadPhoto
 );
+router.get('/get-posts', authMiddleware, getUserPosts);
 
 export default router;
