@@ -26,13 +26,21 @@ export const signUp = async (req: express.Request, res: express.Response) => {
     );
 
     res.json({ token });
-  } catch (error: any) {
-    if (error.code === 11000) {
+  } catch (error: unknown) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 11000
+    ) {
       // Duplicate key error
       res.status(400).json({ message: 'Email already exists' });
     } else {
       // Other errors
-      res.status(500).json({ message: 'Error creating user', error });
+      res.status(500).json({
+        message: 'Error creating user',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
     }
   }
 };
@@ -85,7 +93,7 @@ export const validateToken = async (
     const decoded = jwt.verify(token, secret);
 
     res.json({ decoded });
-  } catch (error) {
+  } catch (err) {
     res.status(401).json({ message: 'Invalid token' });
   }
 };

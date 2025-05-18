@@ -28,7 +28,8 @@ export async function authMiddleware(
     });
     req.user = decoded as string | jwt.JwtPayload | undefined;
     next();
-  } catch (error) {
+  } catch (err) {
     res.status(401).json({ message: 'Invalid token' });
+    return;
   }
 }

@@ -6,7 +6,9 @@
     "build": "tsc",
     "start": "tsc && node dist/app.js",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,json,css,scss,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,ts,tsx,json,css,scss,md}\""
+    "format:check": "prettier --check \"src/**/*.{js,ts,tsx,json,css,scss,md}\"",
+    "lint": "eslint \"{src,apps,libs}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,apps,libs}/**/*.ts\" --fix"
   },
   "keywords": [],
   "author": "",
@@ -24,12 +26,18 @@
     "multer-storage-cloudinary": "^4.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.27.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.15.17",
-    "prettier": "^3.5.3"
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "prettier": "^3.5.3",
+    "typescript-eslint": "^8.32.1"
   }
 }

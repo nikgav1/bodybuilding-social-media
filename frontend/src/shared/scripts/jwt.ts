@@ -1,24 +1,23 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { getToken } from './auth';
+import { UserData } from '../types/user';
 
-export async function validateToken() {
+interface TokenValidationResponse {
+  decoded: UserData;
+}
+
+export async function validateToken(): Promise<AxiosResponse<TokenValidationResponse> | null> {
   const token = getToken();
-  if (!token) {
-    window.location.href = '/login';
-    return false;
-  }
+  if (!token) return null;
+
   try {
-    const res = await axios.post(
+    const response = await axios.post<TokenValidationResponse>(
       '/api/validate-token',
-      { token },
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
+      { token }
     );
-    return res;
+    return response;
   } catch (error) {
-    console.error('Token validation failed:', error);
-    window.location.href = '/login';
-    return false;
+    console.error('Token validation error:', error);
+    return null;
   }
 }

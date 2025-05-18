@@ -3,11 +3,12 @@ import { customElement, state } from 'lit/decorators.js';
 import { ProtectedPage } from '../components/protected-page';
 import axios from 'axios';
 import { getToken } from '../../shared/scripts/auth';
+import { Post } from '../../shared/types/user';
 
 @customElement('profile-page')
 export class ProfilePage extends ProtectedPage {
   @state()
-  private posts: any[] = [];
+  private posts: Post[] = [];
 
   @state()
   private loadingPosts = false;
@@ -23,7 +24,7 @@ export class ProfilePage extends ProtectedPage {
       const token = getToken();
 
       // Fetch user's posts from the backend
-      const response = await axios.get(`/api/get-posts`, {
+      const response = await axios.get<{ posts: Post[] }>(`/api/get-posts`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

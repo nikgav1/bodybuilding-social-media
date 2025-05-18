@@ -104,7 +104,7 @@ export class AppRoot extends LitElement {
       --light-bg: #f5f5f5;
       --header-height: 60px;
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;

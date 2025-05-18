@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { state } from 'lit/decorators.js';
 import { validateToken } from '../../shared/scripts/jwt';
+import { UserData } from '../../shared/types/user';
 
 export abstract class ProtectedPage extends LitElement {
   @state()
@@ -10,7 +11,7 @@ export abstract class ProtectedPage extends LitElement {
   protected loading = true;
 
   @state()
-  protected userData: any = null;
+  protected userData: UserData | null = null;
 
   async connectedCallback() {
     super.connectedCallback();
@@ -28,7 +29,7 @@ export abstract class ProtectedPage extends LitElement {
 
       // If we get here, token is valid
       this.isAuthenticated = true;
-      this.userData = res.data.decoded || {};
+      this.userData = (res.data.decoded as UserData) || null;
       this.loading = false;
 
       // Call optional callback for subclasses to handle after auth
