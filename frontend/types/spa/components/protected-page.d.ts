@@ -1,8 +1,9 @@
 import { LitElement } from 'lit';
+import { UserData } from '../../shared/types/user';
 export declare abstract class ProtectedPage extends LitElement {
     protected isAuthenticated: boolean;
     protected loading: boolean;
-    protected userData: any;
+    protected userData: UserData | null;
     connectedCallback(): Promise<void>;
     checkAuth(): Promise<void>;
     protected onAuthSuccess(): void;

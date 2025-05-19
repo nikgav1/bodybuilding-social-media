@@ -20,7 +20,7 @@ const routes = [
     component: 'feed-page',
     action: async () => {
       await import('../pages/feed');
-    }
+    },
   },
   {
     path: '(.*)',

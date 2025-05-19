@@ -1,7 +1,12 @@
 import express from 'express';
 import { signUp, signIn, validateToken } from '../controllers/authController';
 import { authMiddleware } from '../middlewares/auth';
-import { uploadPhoto, getUserPosts, getFeedPosts } from '../controllers/dataController';
+import {
+  uploadPhoto,
+  getUserPosts,
+  getFeedPosts,
+  likePost,
+} from '../controllers/dataController';
 import { upload } from '../services/uploadPhoto';
 
 const router: express.Router = express.Router();
@@ -15,6 +20,7 @@ router.post(
   upload.single('photo'),
   uploadPhoto
 );
+router.post('/like-post', authMiddleware, likePost);
 router.get('/get-posts', authMiddleware, getUserPosts);
 router.get('/feed-posts', authMiddleware, getFeedPosts);
 

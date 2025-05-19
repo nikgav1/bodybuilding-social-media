@@ -8,9 +8,14 @@ const postSchema = new mongoose.Schema({
   },
   likes: {
     type: Number,
-    required: true,
     default: 0,
   },
+  usersLiked: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   url: {
     type: String,
     unique: true,
